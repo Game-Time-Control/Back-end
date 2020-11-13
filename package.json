@@ -5,12 +5,12 @@
   "main": "./dist/server.js",
   "scripts": 
   {
+    "start": "tsc && nodemon ./dist/server.js",
     "postinstall": "tsc",
     "tsc": "tsc",
     "watch-node": "nodemon dist/index.js",
     "watch-ts":"tsc -w",
     "test": "ts-node ./lib/server.ts",
-    "dev": "tsc && nodemon ./dist/server.js",
     "deploy": "git push heroku master"
   },
   "author": "",
