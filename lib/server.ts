@@ -1,8 +1,6 @@
 import app from "./config/app";
 import * as mongoose from "mongoose";
 import {createSchema, Type, typedModel} from "ts-mongoose";
-const PORT = 4242;
-
 const uri = "mongodb+srv://lorenzofman:TeOzakxnrHciqWDO@cluster0.1balv.mongodb.net/test?retryWrites=true&w=majority";
 
 const connection = mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, function (err)
@@ -30,6 +28,7 @@ app.get('/', (request, response) =>
 {
    response.send('Hello world!');
 });
+app.listen(80);
 
 childDoc.save(function (err)
 {
