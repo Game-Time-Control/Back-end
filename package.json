@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "./dist/server.js",
-  "scripts": {
+  "scripts": 
+  {
+    "postinstall": "tsc",
     "tsc": "tsc",
+    "watch-node": "nodemon dist/index.js",
+    "watch-ts":"tsc -w",
     "test": "ts-node ./lib/server.ts",
-    "dev": "tsc && nodemon ./dist/server.js"
+    "dev": "tsc && nodemon ./dist/server.js",
+    "deploy": "git push heroku master"
   },
   "author": "",
   "license": "ISC",
