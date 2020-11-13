@@ -26,6 +26,11 @@ const childSchema = createSchema
 const childModel = mongoose.model('Children', childSchema);
 const childDoc = new childModel({ name: 'Steve Jobs', parentId: 42 });
 
+app.get('/', (request, response) =>
+{
+   response.send('Hello world!');
+});
+
 childDoc.save(function (err)
 {
    if (err)
