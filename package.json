@@ -6,7 +6,7 @@
   "scripts": 
   {
     "start": "tsc && nodemon ./dist/server.js",
-    "postinstall": "tsc",
+    "postinstall": "npm run tsc",
     "tsc": "tsc",
     "watch-node": "nodemon dist/index.js",
     "watch-ts":"tsc -w",
