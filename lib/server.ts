@@ -1,7 +1,11 @@
 import app from "./config/app";
 import * as mongoose from "mongoose";
-import {createSchema, Type, typedModel} from "ts-mongoose";
-const uri = "mongodb+srv://lorenzofman:TeOzakxnrHciqWDO@cluster0.1balv.mongodb.net/test?retryWrites=true&w=majority";
+
+/* Models */
+import { parentModel } from "./resources/parent/parentModel";
+import { childModel} from "./resources/child/childModel";
+
+const uri = "mongodb+srv://lorenzofman:TeOzakxnrHciqWDO@cluster0.1balv.mongodb.net/development?retryWrites=true&w=majority";
 
 const connection = mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, function (err)
 {
@@ -15,36 +19,22 @@ const connection = mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopol
    }
 });
 
-interface IChild extends mongoose.Document
-{
-   name: string;
-   parentId: number;
-}
 
-const childSchema = createSchema
-({
-   name: Type.string( {required:true} ),
-   parentId: Type.number( {required:true} )
-});
-
-const childModel = mongoose.model<IChild>('Children', childSchema);
-const childDoc = new childModel({ name: 'Steve Jobs', parentId: 42 });
-
-app.get('/', (request, response) =>
-{
-   childModel.findOne({parentId: 42}, 'name', function (err, child)
-   {
-      if (err)
-      {
-         console.error("Failed to find one");
-         response.send(404);
-      }
-      else
-      {
-         response.send(child.name);
-      }
-   });
-});
+// app.get('/', (request, response) =>
+// {
+//    childModel.findOne({childId: "5fb4196b0f737137a08ecf89"}, 'name', function (err, child)
+//    {
+//       if (err)
+//       {
+//          console.error("Failed to find one");
+//          response.send(404);
+//       }
+//       else
+//       {
+//          response.send(child.name);
+//       }
+//    });
+// });
 
 const port = process.env.PORT || 4242;
 console.log(`Start listening to ${port}`);
