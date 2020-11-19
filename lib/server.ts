@@ -2,6 +2,8 @@ import app from "./config/app";
 import {createSample} from './utils/createSample'
 import * as mongoose from "mongoose";
 
+require('./resources/child/childRoutes')(app);
+
 const username = 'lorenzofman';
 const password = 'TeOzakxnrHciqWDO';
 const database = 'development';
