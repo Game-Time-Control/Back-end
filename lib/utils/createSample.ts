@@ -2,6 +2,7 @@
 import {parentModel} from "../resources/parent/parentModel";
 import {childModel} from "../resources/child/childModel";
 import {gameModel} from "../resources/game/gameModel";
+import {dayModel} from "../resources/day/dayModel";
 
 const parentDoc = new parentModel(
 {
@@ -10,13 +11,54 @@ const parentDoc = new parentModel(
     password: "123456789",
 });
 
+const sunday = new dayModel(
+{
+    maxTime: 2,
+    period: [false, true]
+});
+
+const monday = new dayModel(
+{
+    maxTime: 1,
+    period: [false, true]
+});
+
+const tuesday = new dayModel(
+{
+    maxTime: 1,
+    period: [false, true]
+});
+
+const wednesday = new dayModel(
+{
+    maxTime: 0,
+    period: [false, true]
+});
+
+const thursday = new dayModel(
+{
+    maxTime: 1,
+    period: [false, true]
+});
+
+const friday = new dayModel(
+{
+    maxTime: 1,
+    period: [false, true]
+});
+
+const saturday = new dayModel(
+{
+    maxTime: 2,
+    period: [false, true]
+});
+
 const childDoc = new childModel(
 {
     name: 'Enzo',
     parent: parentDoc,
     maxWeekTime: 12,
-    maxDayTime: [],
-    period: [true, false],
+    days : [sunday, monday, tuesday, wednesday, thursday, friday, saturday],
     timePlayedToday: 1,
     lastDayPlayed: Date.now()
 });
@@ -26,8 +68,7 @@ const gameDoc = new gameModel({
     child: childDoc,
     computer: 'Leopard',
     maxWeekTime: 9,
-    maxDayTime: [2, 1, 1, 1, 1, 1, 2],
-    period: [true, false],
+    days: [sunday, monday, tuesday, wednesday, thursday, friday, saturday],
     timePlayedToday: 1,
     lastDayPlayed: Date.now()
 });

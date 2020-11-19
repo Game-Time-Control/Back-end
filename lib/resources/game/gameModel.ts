@@ -1,5 +1,6 @@
 import {createSchema, Type, typedModel} from "ts-mongoose";
 import {childSchema} from "../child/childModel";
+import {daySchema} from "../day/dayModel";
 
 const gameSchema = createSchema
 ({
@@ -7,8 +8,7 @@ const gameSchema = createSchema
     child: Type.ref( Type.objectId({required: true})).to('Child', childSchema),
     computer: Type.string( {required: true} ),
     maxWeekTime: Type.number( {required: true}),
-    maxDayTime: Type.array({ required: true }).of(Type.number({required: true})),
-    period: Type.array({ required: true }).of(Type.boolean({required: true})),
+    days: Type.array({required: true}).of(Type.object().of(daySchema)),
     timePlayedToday: Type.number( {required: true}),
     lastDayPlayed: Type.date( {required: true}),
 });
