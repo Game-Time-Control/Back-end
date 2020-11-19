@@ -1,8 +1,9 @@
 import app from "./config/app";
 import {createSample} from './utils/createSample'
 import * as mongoose from "mongoose";
-
-require('./resources/child/childRoutes')(app);
+import {childRoutes} from "./resources/child/childRoutes";
+import {clearDatabase} from "./utils/clearDatabase";
+import {routeExample} from "./routeExample";
 
 const username = 'lorenzofman';
 const password = 'TeOzakxnrHciqWDO';
@@ -13,10 +14,10 @@ const port = process.env.PORT || 4242;
 async function run(): Promise<void>
 {
    await mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}).catch(error => console.log(error));
-   await mongoose.connection.db.dropDatabase();
+   await clearDatabase();
    console.log(`Database cleared`);
    await createSample();
-   
+   childRoutes(app);
    console.log(`Start listening to ${port}`);
    app.listen(port);
 }
