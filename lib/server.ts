@@ -14,9 +14,9 @@ const port = process.env.PORT || 4242;
 async function run(): Promise<void>
 {
    await mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}).catch(error => console.log(error));
-   await clearDatabase();
-   console.log(`Database cleared`);
-   await createSample();
+   //await clearDatabase();
+   //console.log(`Database cleared`);
+   //await createSample();
    childRoutes(app);
    console.log(`Start listening to ${port}`);
    app.listen(port);
