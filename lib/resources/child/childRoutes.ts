@@ -18,10 +18,10 @@ export function childRoutes(app)
          }
          else
          {
-            console.log("aa", child)
             let configs =
             {
-               childName: child.name,
+               name: child.name,
+               parent: child.parent,
                maxWeekTime: child.maxWeekTime,
                days: child.days,
                timePlayedToday: child.timePlayedToday,
