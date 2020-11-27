@@ -11,46 +11,51 @@ const parentDoc = new parentModel(
     password: "123456789",
 });
 
+let tempPeriod = []
+for(let i=0;i<48;i++){
+    tempPeriod[i] = true;
+}
+
 const sunday = new dayModel(
 {
     maxTime: 2,
-    period: [false, true]
+    period: tempPeriod
 });
 
 const monday = new dayModel(
 {
     maxTime: 1,
-    period: [false, true]
+    period: tempPeriod
 });
 
 const tuesday = new dayModel(
 {
     maxTime: 1,
-    period: [false, true]
+    period: tempPeriod
 });
 
 const wednesday = new dayModel(
 {
     maxTime: 0,
-    period: [false, true]
+    period: tempPeriod
 });
 
 const thursday = new dayModel(
 {
     maxTime: 1,
-    period: [false, true]
+    period: tempPeriod
 });
 
 const friday = new dayModel(
 {
     maxTime: 1,
-    period: [false, true]
+    period: tempPeriod
 });
 
 const saturday = new dayModel(
 {
     maxTime: 2,
-    period: [false, true]
+    period: tempPeriod
 });
 
 const childDoc = new childModel(
