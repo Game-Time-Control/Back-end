@@ -2,7 +2,7 @@ import { childModel } from "./childModel"
 
 export function childRoutes(app)
 {
-   app.get('/child/:child_id/configs', (request, response) =>
+   app.get('/child/:child_id', (request, response) =>
    {
       childModel.findById({_id: request.params.child_id}, function (err, child)
       {
