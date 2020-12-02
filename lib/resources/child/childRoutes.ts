@@ -92,12 +92,21 @@ export function childRoutes(app)
              lastDayPlayed: Date.now()
           });
 
-      await childDoc.save();
+      await childDoc.save(function(err, user) {
+         if (err) {
+            response.send(
+                {
+                   response: 500,
+                });
+         } else {
+            response.send(
+                {
+                   response: 200,
+                });
+         }
+      });
       console.log("Child Saved");
-      response.send(
-          {
-             response: 200,
-          });
+
    })
 }
 
