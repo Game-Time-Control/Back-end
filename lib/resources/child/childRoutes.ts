@@ -1,6 +1,5 @@
 import { childModel } from "./childModel"
 import {dayModel} from "../day/dayModel";
-import {ChildModel} from "../../../time-control-server/lib/models/childModel";
 
 export function childRoutes(app)
 {
@@ -112,7 +111,7 @@ export function childRoutes(app)
    })
 
    app.put('/parent/:parent_id/child/:child_id/update', async function(request, response) {
-      ChildModel.findByIdAndUpdate(
+       childModel.findByIdAndUpdate(
           // the id of the item to find
           request.params.child_id,
 
