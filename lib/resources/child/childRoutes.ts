@@ -1,5 +1,6 @@
 import { childModel } from "./childModel"
 import {dayModel} from "../day/dayModel";
+import {ChildModel} from "../../../time-control-server/lib/models/childModel";
 
 export function childRoutes(app)
 {
@@ -92,7 +93,7 @@ export function childRoutes(app)
              lastDayPlayed: Date.now()
           });
 
-      await childDoc.save(function(err, user) {
+      await childDoc.save(function(err, child) {
          if (err) {
             response.send(
                 {
@@ -102,11 +103,48 @@ export function childRoutes(app)
             response.send(
                 {
                    response: 200,
+                   child: child
                 });
          }
       });
       console.log("Child Saved");
 
    })
+
+   app.put('/parent/:parent_id/child/:child_id/update', async function(request, response) {
+      ChildModel.findByIdAndUpdate(
+          // the id of the item to find
+          request.params.child_id,
+
+          // the change to be made. Mongoose will smartly combine your existing
+          // document with this change, which allows for partial updates too
+          request.body,
+
+          // an option that asks mongoose to return the updated version
+          // of the document instead of the pre-updated one.
+          {new: true},
+
+          // the callback function
+          (err, child) => {
+             // Handle any possible database errors
+             if (err) {
+                response.send(
+                    {
+                       response: 500,
+                    });
+             } else {
+                response.send(
+                    {
+                       response: 200,
+                       child: child
+                    });
+             }
+          }
+      )
+
+   })
+
+
 }
+
 
