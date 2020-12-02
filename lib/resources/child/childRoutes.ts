@@ -1,4 +1,5 @@
 import { childModel } from "./childModel"
+import {dayModel} from "../day/dayModel";
 
 export function childRoutes(app)
 {
@@ -67,5 +68,36 @@ export function childRoutes(app)
          }
       });
    });
+
+   app.post('/parent/:parent_id/child/add', async function(request, response) {
+      let tempPeriod = []
+      for(let i=0;i<48;i++){
+         tempPeriod[i] = true;
+      }
+      const day = new dayModel(
+          {
+             maxTime: 0,
+             period: tempPeriod
+          });
+
+      let name = request.body.name;
+
+      const childDoc = new childModel(
+          {
+             name: name,
+             parent: request.params.parent_id,
+             maxWeekTime: 0,
+             days : [day, day, day, day, day, day, day],
+             timePlayedToday: 0,
+             lastDayPlayed: Date.now()
+          });
+
+      await childDoc.save();
+      console.log("Child Saved");
+      response.send(
+          {
+             response: 200,
+          });
+   })
 }
 
