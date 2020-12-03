@@ -143,6 +143,22 @@ export function childRoutes(app)
 
    })
 
+    app.delete('/child/:child_id/delete', async function(request, response) {
+
+        childModel.findByIdAndDelete(request.params.child_id, function (err) {
+            if (err) {
+                response.send(
+                    {
+                        response: 500,
+                    });
+            } else {
+                response.send(
+                    {
+                        response: 200,
+                    });
+            }
+        });
+    })
 
 }
 
