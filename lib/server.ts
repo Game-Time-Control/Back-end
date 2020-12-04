@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 import {childRoutes} from "./resources/child/childRoutes";
 import {parentRoutes} from "./resources/parent/parentRoutes";
 import {gameRoutes} from "./resources/game/gameRoutes";
+import {binaryRoutes} from "./resources/binaries/binaryRoutes";
 
 const username = 'lorenzofman';
 const password = 'TeOzakxnrHciqWDO';
@@ -16,13 +17,14 @@ app.use(cors())
 
 async function run(): Promise<void>
 {
-   await mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}).catch(error => console.log(error));
+   await mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false}).catch(error => console.log(error));
    // await clearDatabase();
    // console.log(`Database cleared`);
    // await createSample();
    parentRoutes(app);
    childRoutes(app);
    gameRoutes(app);
+   binaryRoutes(app);
    console.log(`Start listening to ${port}`);
    app.listen(port);
 }

@@ -142,8 +142,6 @@ export function childRoutes(app)
       )
 
    })
-
-
 }
 
 
