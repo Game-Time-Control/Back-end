@@ -1,14 +1,15 @@
 import {binaryModel} from "./binaryModel";
+import * as fs from "fs";
 
 function updateBinary(request, response, name: string)
 {
-    const binary = new binaryModel
-    ({
-        name: name,
-        data: request.body
-    });
     binaryModel.findOne({name: name}, function (err, result)
     {
+        const binary = new binaryModel
+        ({
+            name: name,
+            data: request.body
+        });
         if (err)
         {
             response.send({response: 500});
@@ -17,11 +18,12 @@ function updateBinary(request, response, name: string)
         }
         else if (result != null)
         {
-            binaryModel.findOneAndUpdate({name: name}, {data: request.body}, function (err, result)
+            binaryModel.findOneAndUpdate({name: name}, {data: binary.data}, function (err, result)
             {
                 if (err)
                 {
                     console.log(name + ': Binary update failure');
+                    console.log(err);
                     response.send({response: 500});
                 }
                 else
@@ -61,11 +63,36 @@ function getBinary(request, response, name: string)
     });
 }
 
+function downloadBinary(request, response, name: string, downloadTitle: string)
+{
+    binaryModel.findOne({name: name}, function (err, bin)
+    {
+        if (err)
+        {
+            console.error("Unexpected error");
+            response.send({response: 201});
+        }
+        else if (bin == null)
+        {
+            console.error("Failed to find the binary");
+            response.send({response: 404});
+        }
+        else
+        {
+            let array = Buffer.from(bin.data, 'base64');
+            const { Readable } = require('stream');
+            const readableStream = Readable.from(array);
+            response.attachment(downloadTitle);
+            readableStream.pipe(response);
+        }
+    });
+}
+
 export function binaryRoutes(app)
 {
     app.get('/download', (request, response) =>
     {
-        //getBinary(request, response, 'setup');
+        downloadBinary(request, response, 'setup', 'GameHub.exe');
     });
     
     app.get('/binaries/x86', (request, response) =>

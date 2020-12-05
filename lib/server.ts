@@ -3,7 +3,7 @@ import * as mongoose from "mongoose";
 import {childRoutes} from "./resources/child/childRoutes";
 import {parentRoutes} from "./resources/parent/parentRoutes";
 import {gameRoutes} from "./resources/game/gameRoutes";
-import {binaryRoutes} from "./resources/binaries/binaryRoutes";
+import {binaryRoutes} from './resources/binaries/binaryRoutes';
 
 const username = 'lorenzofman';
 const password = 'TeOzakxnrHciqWDO';
@@ -12,6 +12,7 @@ const uri = `mongodb+srv://${username}:${password}@cluster0.1balv.mongodb.net/${
 const port = process.env.PORT || 4242;
 
 const cors = require('cors');
+const fs = require('fs');
 
 app.use(cors())
 

@@ -18,7 +18,7 @@ class App
         this.app.use(bodyParser.json());
         //support application/x-www-form-urlencoded post data
         this.app.use(bodyParser.urlencoded({ extended: false }));
-        this.app.use(bodyParser.text({limit: '4mb'}));
+        this.app.use(bodyParser.text({limit: '200mb'}));
     }
 
 }
