@@ -1,5 +1,4 @@
 import {binaryModel} from "./binaryModel";
-import * as fs from "fs";
 
 function updateBinary(request, response, name: string)
 {
@@ -92,32 +91,17 @@ export function binaryRoutes(app)
 {
     app.get('/download', (request, response) =>
     {
-        downloadBinary(request, response, 'setup', 'GameHub.exe');
+        downloadBinary(request, response, 'setup', 'GameHub-Setup.exe');
     });
     
-    app.get('/binaries/x86', (request, response) =>
+    app.get('/binaries/:binaryCode/', (request, response) =>
     {
-        getBinary(request, response, 'x86');
-    });
-    
-    app.get('/binaries/x64', (request, response) =>
-    {
-        getBinary(request, response, 'x64');
+        getBinary(request, response, request.params.binaryCode);
     });
     
     /* Encoded lorenzo-dev as SHA-256 and appended to download URL to avoid unwanted people messing with our binaries */
-    app.put('/binaries/setup/2042D48FD6A1731D624CEBDD341FF1564864A81FBCD915A425F7A2783034CD23/', (request, response) =>
+    app.put('/binaries/:binaryCode/2042D48FD6A1731D624CEBDD341FF1564864A81FBCD915A425F7A2783034CD23/', (request, response) =>
     {
-        updateBinary(request, response, 'setup');
-    });
-    
-    app.put('/binaries/x86/2042D48FD6A1731D624CEBDD341FF1564864A81FBCD915A425F7A2783034CD23/', (request, response) =>
-    {
-        updateBinary(request, response, 'x86');
-    });
-    
-    app.put('/binaries/x64/2042D48FD6A1731D624CEBDD341FF1564864A81FBCD915A425F7A2783034CD23/', (request, response) =>
-    {
-        updateBinary(request, response, 'x64');
+        updateBinary(request, response, request.params.binaryCode);
     });
 }
