@@ -71,7 +71,7 @@ export function childRoutes(app)
 
    app.post('/parent/:parent_id/child/add', async function(request, response) {
       let tempPeriod = []
-      for(let i=0;i<48;i++){
+      for(let i=0;i<24;i++){
          tempPeriod[i] = true;
       }
       const day = new dayModel(
