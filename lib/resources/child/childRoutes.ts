@@ -1,73 +1,52 @@
 import { childModel } from "./childModel"
 import {dayModel} from "../day/dayModel";
+import {send} from "../../utils/responseUtils";
 
 export function childRoutes(app)
 {
    app.get('/child/:child_id', (request, response) =>
    {
-      childModel.findById({_id: request.params.child_id}, function (err, child)
-      {
-         if (err)
-         {
-            console.error("Unexpected error");
-            response.send({response: 201});
-         }
-         else if (child == null)
-         {
-            console.error("Failed to find the child configs");
-            response.send({response: 404});
-         }
-         else
-         {
-            let configs =
-            {
-               name: child.name,
-               parent: child.parent,
-               maxWeekTime: child.maxWeekTime,
-               days: child.days,
-               timePlayedToday: child.timePlayedToday,
-               lastDayPlayed: child.lastDayPlayed
-            }
-            
-           response.send(
-           {
-              response: 200,
-              payload: configs
-           });
-         }
-      });
+       console.log(request.params.child_id)
+       childModel.findById({_id: request.params.child_id}, function (err, child)
+       {
+           send(err, child, response);
+       });
    });
 
    app.get('/parent/:parent_id/children', (request, response) =>
    {
       childModel.find({parent: request.params.parent_id}, function (err, child)
       {
-         if (err)
-         {
-            console.error("Unexpected error");
-            response.send({response: 201});
-         }
+          if (err)
+          {
+              console.error("Unexpected error");
+              response.sendStatus(500);
+          }
          else if (child == null)
          {
             console.error("Failed to find the parent");
-            response.send({response: 404});
+            response.sendStatus(404);
          }
          else
          {
-            let children = []
-            for(let i=0;i<child.length;i++){
-               children[i] = {id: child[i]._id,
-                  name: child[i].name,}
-            }
-            console.log(children)
-            response.send(
-            	{
-            		response: 200,
-            		payload: children
-            	});
+             let children = []
+             for (let i = 0; i <child.length ;i++)
+             {
+                 children[i] = { id: child[i]._id, name: child[i].name}
+             }
+             console.log(children);
+             response.send(children);
          }
       });
    });
+    
+    app.get('/parent/:parent_id/childrenComplete', (request, response) =>
+    {
+        childModel.find({parent: request.params.parent_id}, function (err, children)
+        {
+            send(err, children, response);
+        });
+    });
 
    app.post('/parent/:parent_id/child/add', async function(request, response) {
       let tempPeriod = []
@@ -92,70 +71,47 @@ export function childRoutes(app)
              lastDayPlayed: Date.now()
           });
 
-      await childDoc.save(function(err, child) {
-         if (err) {
-            response.send(
-                {
-                   response: 500,
-                });
-         } else {
-            response.send(
-                {
-                   response: 200,
-                   child: child
-                });
+      await childDoc.save(function(err, child)
+      {
+         if (err)
+         {
+            response.sendStatus(500);
+         }
+         else
+         {
+            response.send(child);
          }
       });
       console.log("Child Saved");
 
    })
 
-   app.put('/parent/:parent_id/child/:child_id/update', async function(request, response) {
-       childModel.findByIdAndUpdate(
-          // the id of the item to find
-          request.params.child_id,
+   app.put('/parent/:parent_id/child/:child_id/update', async function(request, response)
+   {
+       childModel.findByIdAndUpdate(request.params.child_id, request.body, {new: true}, (err, child) =>
+       {
+           if (err)
+           {
+                response.sendStatus(500);
+           }
+           else
+           {
+               response.send(child);
+           }
+       });
+   });
 
-          // the change to be made. Mongoose will smartly combine your existing
-          // document with this change, which allows for partial updates too
-          request.body,
-
-          // an option that asks mongoose to return the updated version
-          // of the document instead of the pre-updated one.
-          {new: true},
-
-          // the callback function
-          (err, child) => {
-             // Handle any possible database errors
-             if (err) {
-                response.send(
-                    {
-                       response: 500,
-                    });
-             } else {
-                response.send(
-                    {
-                       response: 200,
-                       child: child
-                    });
-             }
-          }
-      )
-
-   })
-
-    app.delete('/child/:child_id/delete', async function(request, response) {
-
-        childModel.findByIdAndDelete(request.params.child_id, function (err) {
-            if (err) {
-                response.send(
-                    {
-                        response: 500,
-                    });
-            } else {
-                response.send(
-                    {
-                        response: 200,
-                    });
+    app.delete('/child/:child_id/delete', async function(request, response)
+    {
+        childModel.findByIdAndDelete(request.params.child_id, function (err)
+        {
+            if (err)
+            {
+                response.sendStatus(500);
+            }
+            else
+            {
+                response.sendStatus(200);
             }
         });
     })

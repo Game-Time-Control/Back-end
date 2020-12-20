@@ -1,4 +1,5 @@
 import {binaryModel} from "./binaryModel";
+import {send} from "../../utils/responseUtils";
 
 function updateBinary(request, response, name: string)
 {
@@ -23,12 +24,12 @@ function updateBinary(request, response, name: string)
                 {
                     console.log(name + ': Binary update failure');
                     console.log(err);
-                    response.send({response: 500});
+                    response.sendStatus(500);
                 }
                 else
                 {
                     console.log(name + ': Binary update successfully');
-                    response.send({response: 200});
+                    response.sendStatus(200)
                 }
             });
             
@@ -36,7 +37,7 @@ function updateBinary(request, response, name: string)
         else
         {
             binary.save().then(() => console.log(name + ': New binary created'));
-            response.send({response: 200});
+            response.sendStatus(200);
         }
     });
 }
@@ -45,20 +46,7 @@ function getBinary(request, response, name: string)
 {
     binaryModel.findOne({name: name}, function (err, bin)
     {
-        if (err)
-        {
-            console.error("Unexpected error");
-            response.send({response: 201});
-        }
-        else if (bin == null)
-        {
-            console.error("Failed to find the binary");
-            response.send({response: 404});
-        }
-        else
-        {
-            response.send(bin.data);
-        }
+        send(err, bin, response);
     });
 }
 
@@ -69,12 +57,12 @@ function downloadBinary(request, response, name: string, downloadTitle: string)
         if (err)
         {
             console.error("Unexpected error");
-            response.send({response: 201});
+            response.sendStatus(500);
         }
         else if (bin == null)
         {
             console.error("Failed to find the binary");
-            response.send({response: 404});
+            response.sendStatus(404);
         }
         else
         {

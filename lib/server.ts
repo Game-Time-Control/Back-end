@@ -4,6 +4,7 @@ import {childRoutes} from "./resources/child/childRoutes";
 import {parentRoutes} from "./resources/parent/parentRoutes";
 import {gameRoutes} from "./resources/game/gameRoutes";
 import {binaryRoutes} from './resources/binaries/binaryRoutes';
+import {genericRoute} from "./resources/generic/genericRoute";
 
 const username = 'lorenzofman';
 const password = 'TeOzakxnrHciqWDO';
@@ -19,6 +20,7 @@ app.use(cors())
 async function run(): Promise<void>
 {
    await mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false}).catch(error => console.log(error));
+   const connection = mongoose.connection;
    // await clearDatabase();
    // console.log(`Database cleared`);
    // await createSample();
@@ -26,6 +28,7 @@ async function run(): Promise<void>
    childRoutes(app);
    gameRoutes(app);
    binaryRoutes(app);
+   genericRoute(app, connection);
    console.log(`Start listening to ${port}`);
    app.listen(port);
 }

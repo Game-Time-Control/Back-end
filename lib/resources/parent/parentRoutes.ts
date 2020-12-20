@@ -9,12 +9,12 @@ export function parentRoutes(app)
 	    if (err)
 	    {
 		console.error("Unexpected error");
-		response.send({response: 201});
+		response.sendStatus(500);
 	    }
 	    else if (parent == null)
 	    {
 		console.error("Failed to find the parent configs");
-		response.send({response: 404});
+		response.sendStatus(404);
 	    }
 	    else
 	    {
@@ -24,11 +24,7 @@ export function parentRoutes(app)
 		    email: parent.email
 		}
 		
-		response.send(
-		{
-		    response: 200,
-		    payload: configs
-		});
+		response.send(configs);
 	    }
 	});
     });

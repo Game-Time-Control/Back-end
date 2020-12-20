@@ -9,12 +9,12 @@ export function gameRoutes(app)
 	    if (err)
 	    {
 		console.error("Unexpected error");
-		response.send({response: 201});
+		response.sendStatus(500);
 	    }
 	    else if (game == null)
 	    {
 		console.error("Failed to find the game configs");
-		response.send({response: 404});
+		response.sendStatus(404);
 	    }
 	    else
 	    {
@@ -29,11 +29,7 @@ export function gameRoutes(app)
 		    lastDayPlayed: game.lastDayPlayed
 		}
 		
-		response.send(
-		{
-		    response: 200,
-		    payload: configs
-		});
+		response.send(configs);
 	    }
 	});
     });
