@@ -1,7 +1,6 @@
 import { childModel } from "./childModel"
 import {dayModel} from "../day/dayModel";
-import {send} from "../../utils/responseUtils";
-
+import {send, verifyJWT} from "../../utils/responseUtils";
 export function childRoutes(app)
 {
    app.get('/child/:child_id', (request, response) =>
@@ -11,8 +10,9 @@ export function childRoutes(app)
        {
            send(err, child, response);
        });
-   });
-
+   })
+    // TODO DESCOMENTA aqui e substitui pela linha de baixo
+    //app.get('/parent/:parent_id/children', verifyJWT,  (request, response) =>
    app.get('/parent/:parent_id/children', (request, response) =>
    {
       childModel.find({parent: request.params.parent_id}, function (err, child)
