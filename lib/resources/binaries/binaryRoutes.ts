@@ -46,7 +46,7 @@ function getBinary(request, response, name: string)
 {
     binaryModel.findOne({name: name}, function (err, bin)
     {
-        send(err, bin, response);
+        send(err, bin.data, response);
     });
 }
 
