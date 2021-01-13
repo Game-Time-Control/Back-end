@@ -77,7 +77,12 @@ export function parentRoutes(app)
 			response.send(childDoc);
 		} catch (err) {
 			console.log(err)
-			response.sendStatus(500);
+			if (err.name === 'MongoError' && err.code === 11000) {
+				// Duplicate username
+				return response.sendStatus(422);
+			} else {
+				return response.sendStatus(500);
+			}
 		}
 
 	})
