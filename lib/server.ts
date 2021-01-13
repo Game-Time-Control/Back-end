@@ -1,17 +1,26 @@
 console.log(`Wakey wakey!`);
 import app from "./config/app";
+console.log(`Import app`);
 import * as mongoose from "mongoose";
+console.log(`Import mongoose`);
 import {childRoutes} from "./resources/child/childRoutes";
+console.log(`Import child routes`);
 import {parentRoutes} from "./resources/parent/parentRoutes";
+console.log(`Import parent routes`);
 import {gameRoutes} from "./resources/game/gameRoutes";
+console.log(`Import game routes`);
 import {binaryRoutes} from './resources/binaries/binaryRoutes';
+console.log(`Import binary routes`);
 import {genericRoute} from "./resources/generic/genericRoute";
+console.log(`Import generic routes`);
 
 const username = 'lorenzofman';
 const password = 'TeOzakxnrHciqWDO';
 const database = 'development';
 const uri = `mongodb+srv://${username}:${password}@cluster0.1balv.mongodb.net/${database}?retryWrites=true&w=majority`;
+console.log(`Before port fetch`);
 const port = process.env.PORT || 4242;
+console.log(`After port fetch`);
 
 async function run(): Promise<void>
 {
