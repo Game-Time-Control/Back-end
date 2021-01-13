@@ -1,4 +1,7 @@
 import { parentModel } from "./parentModel"
+import {dayModel} from "../day/dayModel";
+import {childModel} from "../child/childModel";
+import * as bcrypt from 'bcrypt';
 
 export function parentRoutes(app)
 {
@@ -30,6 +33,53 @@ export function parentRoutes(app)
     });
 
 
-}
+	app.post('/register', async function(request, response) {
+		const hashedPassword = await bcrypt.hash(request.body.password, 10);
 
+		try {
+			const parentDoc = new parentModel(
+				{
+					name: request.body.parentName,
+					email: request.body.email,
+					password: hashedPassword,
+				});
+
+			let tempPeriod = []
+			for(let i=0;i<24;i++){
+				tempPeriod[i] = true;
+			}
+			const day = new dayModel(
+				{
+					maxTime: 0,
+					period: tempPeriod
+				});
+
+			let childDoc;
+			let parentReference;
+
+			await parentDoc.save();
+
+			parentReference = parentDoc._id;
+
+			for(let i = 0; i < request.body.children.length; i++) {
+				childDoc = new childModel(
+					{
+						name: request.body.children[i].name,
+						parent: parentReference,
+						maxWeekTime: 0,
+						days : [day, day, day, day, day, day, day],
+						timePlayedToday: 0,
+						lastDayPlayed: Date.now()
+					});
+				await childDoc.save();
+			}
+
+			response.send(childDoc);
+		} catch (err) {
+			console.log(err)
+			response.sendStatus(500);
+		}
+
+	})
+}
 
