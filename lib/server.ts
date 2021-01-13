@@ -18,7 +18,12 @@ const username = 'lorenzofman';
 const password = 'TeOzakxnrHciqWDO';
 const database = 'development';
 const uri = `mongodb+srv://${username}:${password}@cluster0.1balv.mongodb.net/${database}?retryWrites=true&w=majority`;
-console.log(`Before port fetch`);
+
+console.log(`Constants`);
+const cors = require('cors');
+console.log(`Require Cors`);
+app.use(cors())
+console.log(`Use Cors`);
 const port = process.env.PORT || 4242;
 console.log(`After port fetch`);
 
