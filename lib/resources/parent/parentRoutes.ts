@@ -5,32 +5,32 @@ import * as bcrypt from 'bcrypt';
 
 export function parentRoutes(app)
 {
-    app.get('/parent/:parental_id/configs', (request, response) =>
-    {
-	parentModel.findById({_id: request.params.parental_id}, function (err, parent)
+	app.get('/parent/:parental_id/configs', (request, response) =>
 	{
-	    if (err)
-	    {
-		console.error("Unexpected error");
-		response.sendStatus(500);
-	    }
-	    else if (parent == null)
-	    {
-		console.error("Failed to find the parent configs");
-		response.sendStatus(404);
-	    }
-	    else
-	    {
-		let configs =
+		parentModel.findById({_id: request.params.parental_id}, function (err, parent)
 		{
-		    name: parent.name,
-		    email: parent.email
-		}
-		
-		response.send(configs);
-	    }
+			if (err)
+			{
+				console.error("Unexpected error");
+				response.sendStatus(500);
+			}
+			else if (parent == null)
+			{
+				console.error("Failed to find the parent configs");
+				response.sendStatus(404);
+			}
+			else
+			{
+				let configs =
+					{
+						name: parent.name,
+						email: parent.email
+					}
+
+				response.send(configs);
+			}
+		});
 	});
-    });
 
 
 	app.post('/register', async function(request, response) {
@@ -86,5 +86,27 @@ export function parentRoutes(app)
 		}
 
 	})
+
+	app.post('/login', async function(request, response) {
+		parentModel.findOne({email: request.body.email}, function (err, user) {
+			console.log(user);
+			if (err) {
+				console.error("Failed to find one");
+				response.sendStatus(404);
+			} else {
+				bcrypt.compare(request.body.password, user.password, function (err, result) {
+					if (result == true) {
+						response.send({data: {userId: user._id,
+								name: user.name,
+								email: user.email}});
+					} else {
+						response.sendStatus(404);
+					}
+				})
+			}
+		})
+	})
+
+
 }
 
