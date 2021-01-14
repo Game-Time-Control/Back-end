@@ -2,6 +2,8 @@ import { parentModel } from "./parentModel"
 import {dayModel} from "../day/dayModel";
 import {childModel} from "../child/childModel";
 import * as bcrypt from 'bcrypt';
+require("dotenv").config();
+const jwt = require('jsonwebtoken');
 
 export function parentRoutes(app)
 {
@@ -88,17 +90,27 @@ export function parentRoutes(app)
 	})
 
 	app.post('/login', async function(request, response) {
-		parentModel.findOne({email: request.body.email}, function (err, user) {
+		parentModel.findOne({email: request.body.email}, async function (err, user) {
 			console.log(user);
 			if (err) {
 				console.error("Failed to find one");
 				response.sendStatus(404);
 			} else {
-				bcrypt.compare(request.body.password, user.password, function (err, result) {
+				await bcrypt.compare(request.body.password, user.password, function (err, result) {
 					if (result == true) {
-						response.send({data: {userId: user._id,
-								name: user.name,
-								email: user.email}});
+
+						const token = jwt.sign({
+							userId: user._id,
+							name: user.name,
+							email: user.email}, process.env.SECRET);
+
+						response.send({
+							data:
+								{auth: true,
+								token: token,
+								userId: user._id,
+									name: user.name,
+									email: user.email}});
 					} else {
 						response.sendStatus(404);
 					}
@@ -109,4 +121,3 @@ export function parentRoutes(app)
 
 
 }
-

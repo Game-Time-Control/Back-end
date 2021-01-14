@@ -1,10 +1,10 @@
 import { childModel } from "./childModel"
 import {dayModel} from "../day/dayModel";
-import {send} from "../../utils/responseUtils";
+import {send, verifyJWT} from "../../utils/responseUtils";
 
 export function childRoutes(app)
 {
-   app.get('/child/:child_id', (request, response) =>
+   app.get('/child/:child_id', verifyJWT, (request, response) =>
    {
        console.log(request.params.child_id)
        childModel.findById({_id: request.params.child_id}, function (err, child)
@@ -13,9 +13,9 @@ export function childRoutes(app)
        });
    });
 
-   app.get('/parent/:parent_id/children', (request, response) =>
+   app.get('/parent/:parent_id/children', verifyJWT, (request, response) =>
    {
-      childModel.find({parent: request.params.parent_id}, function (err, child)
+      childModel.find({parent: request.params.parent_id},  function (err, child)
       {
           if (err)
           {
@@ -48,7 +48,7 @@ export function childRoutes(app)
         });
     });
 
-   app.post('/parent/:parent_id/child/add', async function(request, response) {
+   app.post('/parent/:parent_id/child/add', verifyJWT,  async function(request, response) {
       let tempPeriod = []
       for(let i=0;i<24;i++){
          tempPeriod[i] = true;
@@ -86,7 +86,7 @@ export function childRoutes(app)
 
    })
 
-   app.put('/parent/:parent_id/child/:child_id/update', async function(request, response)
+   app.put('/parent/:parent_id/child/:child_id/update', verifyJWT,  async function(request, response)
    {
        childModel.findByIdAndUpdate(request.params.child_id, request.body, {new: true}, (err, child) =>
        {
@@ -101,7 +101,7 @@ export function childRoutes(app)
        });
    });
 
-    app.delete('/child/:child_id/delete', async function(request, response)
+    app.delete('/child/:child_id/delete', verifyJWT,  async function(request, response)
     {
         childModel.findByIdAndDelete(request.params.child_id, function (err)
         {
