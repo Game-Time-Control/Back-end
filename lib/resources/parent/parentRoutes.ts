@@ -102,7 +102,7 @@ export function parentRoutes(app)
 						const token = jwt.sign({
 							userId: user._id,
 							name: user.name,
-							email: user.email}, process.env.SECRET);
+							email: user.email}, "mySecret"); //TODO change this to an .env
 
 						response.send({
 							data:

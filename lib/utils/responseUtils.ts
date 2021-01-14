@@ -7,7 +7,7 @@ export function verifyJWT(req, res, next){
     console.log(token)
     if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
 
-    jwt.verify(token, process.env.SECRET, function(err, decoded) {
+    jwt.verify(token, "mySecret", function(err, decoded) { //TODO change this to an .env
         if (err) return res.status(500).json({ auth: false, message: 'Failed trso authenticate token.' });
 
         // se tudo estiver ok, salva no request para uso posterior
