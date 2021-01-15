@@ -40,7 +40,7 @@ export function childRoutes(app)
       });
    });
     
-    app.get('/parent/:parent_id/childrenComplete', (request, response) =>
+    app.get('/parent/:parent_id/childrenComplete', verifyJWT, (request, response) =>
     {
         childModel.find({parent: request.params.parent_id}, function (err, children)
         {

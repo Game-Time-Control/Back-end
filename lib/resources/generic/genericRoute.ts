@@ -1,8 +1,9 @@
 import {Connection} from "mongoose";
+import {verifyJWT} from "../../utils/responseUtils";
 
 export function genericRoute(app, connection: Connection)
 {
-    app.get('/store/:collection', (request, response) =>
+    app.get('/store/:collection', verifyJWT, (request, response) =>
     {
 	const name = request.params.collection;
 	connection.collection(name).findOne(function(err, document)
@@ -22,7 +23,7 @@ export function genericRoute(app, connection: Connection)
 	console.log(`Replacing document at collection <${name}>:`);
 	console.log(json);
  
-	connection.db.collections().then(function (collections)
+	connection.db.collections().then(function ()
 	{
 	    connection.collection(name).replaceOne({}, json, {upsert: true}, function (err)
 	    {
