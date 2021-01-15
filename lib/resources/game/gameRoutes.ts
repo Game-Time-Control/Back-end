@@ -1,8 +1,9 @@
 import { gameModel } from "./gameModel"
+import {verifyJWT} from "../../utils/responseUtils";
 
 export function gameRoutes(app)
 {
-    app.get('/game/:game_id/configs', (request, response) =>
+    app.get('/game/:game_id/configs', verifyJWT, (request, response) =>
     {
 	gameModel.findById({_id: request.params.game_id}, function (err, game)
 	{

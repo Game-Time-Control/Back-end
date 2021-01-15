@@ -120,7 +120,7 @@ export function parentRoutes(app)
 			    userId: user._id,
 			    name: user.name,
 			    email: user.email
-			}, "mySecret"); //TODO change this to an .env
+			}, process.env.jwt_secret);
 			
 			response.send({
 			    data:
