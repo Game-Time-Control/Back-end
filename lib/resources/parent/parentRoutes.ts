@@ -107,8 +107,10 @@ export function parentRoutes(app)
 	    if (err)
 	    {
 		console.error("Failed to find one");
-		response.sendStatus(404);
-	    }
+		response.sendStatus(500);
+	    } else if (user === null) {
+			response.sendStatus(404);
+		}
 	    else
 	    {
 		await bcrypt.compare(request.body.password, user.password, function (err, result)
@@ -139,7 +141,7 @@ export function parentRoutes(app)
 		    }
 		})
 	    }
-	})
+	}).catch(err => console.log(err))
     })
     
     
