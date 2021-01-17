@@ -55,7 +55,7 @@ export function childRoutes(app)
       }
       const day = new dayModel(
           {
-             maxTime: 0,
+             maxTime: 24,
              period: tempPeriod
           });
 
